@@ -1,7 +1,7 @@
 {
-  "name": "koa-api-boilerplate",
+  "name": "bridge-faucet",
   "version": "3.0.0",
-  "description": "Koa2 boilerplate covering essentials for REST API and auth.",
+  "description": "A token faucet REST API for the AVAX-SLP bridge.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -15,24 +15,13 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coverage:report": "export KOA_ENV=test && nyc --reporter=html mocha --exit --timeout 15000 test/unit/biz-logic/ test/unit/rest-api/ test/e2e/automated/"
   },
-  "keywords": [
-    "koa-api-boilerplate",
-    "api",
-    "koa",
-    "koa2",
-    "boilerplate",
-    "es6",
-    "mongoose",
-    "passportjs",
-    "apidoc"
-  ],
   "author": "Chris Troutner <chris.troutner@gmail.com>",
   "license": "MIT",
   "apidoc": {
-    "title": "koa-api-boilerplate",
+    "title": "bridge-faucet",
     "url": "localhost:5000"
   },
-  "repository": "christroutner/koa-api-boilerplate",
+  "repository": "Permissionless-Software-Foundation/bridge-faucet",
   "dependencies": {
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
