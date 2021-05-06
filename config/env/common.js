@@ -16,5 +16,5 @@ module.exports = {
   AVAX_IP: process.env.AVAX_IP,
   AVAX_PORT: process.env.AVAX_PORT,
   AVAX_PRIVATE_KEY: process.env.AVAX_PRIVATE_KEY,
-  AVAX_TOKEN: process.env.AVAX_TOKEN,
+  AVAX_TOKEN: process.env.AVAX_TOKEN
 }
