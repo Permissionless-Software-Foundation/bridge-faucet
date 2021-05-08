@@ -4,8 +4,6 @@
 
 This is a REST API server using node.js JavaScript and based on this [koa API boilerplate](https://github.com/christroutner/koa-api-boilerplate). This server is used to distribute test tokens for testing the [AVAX-SLP bridge](https://psfoundation.cash/blog/cross-chain-slp).
 
-For more information, ask about this project in this [Telegram channel](https://t.me/permissionless_software).
-
 ## Installation
 
 ```bash
