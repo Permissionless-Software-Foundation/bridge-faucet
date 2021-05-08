@@ -8,14 +8,17 @@ const avalanche = require('avalanche')
 const avm = require('avalanche/dist/apis/avm')
 
 let _this
-class UserController {
+class FaucetController {
   constructor () {
     // Encapsulate dependencies
     this.bchjs = new BCHJS({ restURL: 'https://api.fullstack.cash/v4/' })
     this.bchUtil = new BchUtil({ bchjs: this.bchjs })
     this.config = config
 
-    this.avax = new avalanche.Avalanche(config.AVAX_IP, parseInt(config.AVAX_PORT))
+    this.avax = new avalanche.Avalanche(
+      config.AVAX_IP,
+      parseInt(config.AVAX_PORT)
+    )
     this.xchain = this.avax.XChain()
     this.avm = avm
     this.binTools = avalanche.BinTools.getInstance()
@@ -55,27 +58,34 @@ class UserController {
 
       const cashAddress = _this.bchjs.ECPair.toCashAddress(ecPair)
       const legacyAddress = _this.bchjs.Address.toLegacyAddress(cashAddress)
-      const receiverAddress = _this.bchjs.Address.toLegacyAddress(ctx.params.addr)
+      const receiverAddress = _this.bchjs.Address.toLegacyAddress(
+        ctx.params.addr
+      )
 
       const utxoData = await _this.bchjs.Electrumx.utxo(cashAddress)
       const utxos = utxoData.utxos
 
       const utxoDetails = await _this.bchjs.SLP.Utils.tokenUtxoDetails(utxos)
       // Filter out the non-SLP token UTXOs.
-      const bchUtxos = utxoDetails.filter(utxo => Boolean(utxo) && !utxo.isValid)
+      const bchUtxos = utxoDetails.filter(
+        utxo => Boolean(utxo) && !utxo.isValid
+      )
       if (bchUtxos.length === 0) {
         throw new Error('Wallet does not have a BCH UTXO to pay miner fees.')
       }
 
       // Filter out the token UTXOs that match the token ID
-      const tokenUtxos = utxoDetails.filter((utxo) =>
-        Boolean(utxo) &&
-        utxo.tokenId === _this.config.tokenID &&
-        utxo.utxoType === 'token'
+      const tokenUtxos = utxoDetails.filter(
+        utxo =>
+          Boolean(utxo) &&
+          utxo.tokenId === _this.config.tokenID &&
+          utxo.utxoType === 'token'
       )
 
       if (tokenUtxos.length === 0) {
-        throw new Error('No token UTXOs for the specified token could be found.')
+        throw new Error(
+          'No token UTXOs for the specified token could be found.'
+        )
       }
 
       const bchUtxo = _this.bchUtil.util.findBiggestUtxo(bchUtxos)
@@ -103,22 +113,13 @@ class UserController {
       }
       txBuilder.addOutput(slpData, 0)
       // Send dust transaction representing tokens being sent.
-      txBuilder.addOutput(
-        receiverAddress,
-        546
-      )
+      txBuilder.addOutput(receiverAddress, 546)
 
       if (slpSendObj.outputs > 1) {
-        txBuilder.addOutput(
-          legacyAddress,
-          546
-        )
+        txBuilder.addOutput(legacyAddress, 546)
       }
 
-      txBuilder.addOutput(
-        legacyAddress,
-        remainder
-      )
+      txBuilder.addOutput(legacyAddress, remainder)
 
       let redeemScript
       txBuilder.sign(
@@ -197,12 +198,19 @@ class UserController {
         throw new Error('Not enough founds to pay for transaction (AVAX)')
       }
 
-      const tokenBalance = await utxoSet.getBalance([address], _this.config.AVAX_TOKEN)
-      const { denomination, symbol } = await _this.xchain.getAssetDescription(_this.config.AVAX_TOKEN)
+      const tokenBalance = await utxoSet.getBalance(
+        [address],
+        _this.config.AVAX_TOKEN
+      )
+      const { denomination, symbol } = await _this.xchain.getAssetDescription(
+        _this.config.AVAX_TOKEN
+      )
       const sendAmount = new _this.BN(10).pow(new _this.BN(denomination))
 
       if (sendAmount.gt(tokenBalance)) {
-        throw new Error(`Insufficient funds to create the transaction. (${symbol})`)
+        throw new Error(
+          `Insufficient funds to create the transaction. (${symbol})`
+        )
       }
 
       const memo = Buffer.from(`Faucet tx (${symbol})`)
@@ -268,4 +276,4 @@ class UserController {
   }
 }
 
-module.exports = UserController
+module.exports = FaucetController
