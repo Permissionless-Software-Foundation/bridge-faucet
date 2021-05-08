@@ -23,7 +23,9 @@
   },
   "repository": "Permissionless-Software-Foundation/bridge-faucet",
   "dependencies": {
+    "@psf/bch-js": "^4.18.1",
     "axios": "^0.21.1",
+    "bch-util": "^1.2.5",
     "bcryptjs": "^2.4.3",
     "glob": "^7.1.6",
     "jsonwebtoken": "^8.5.1",
