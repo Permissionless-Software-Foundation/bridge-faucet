@@ -7,16 +7,16 @@ module.exports.routes = [
   {
     method: 'GET',
     route: '/',
-    handlers: [controller.ping],
+    handlers: [controller.ping]
   },
   {
     method: 'GET',
     route: '/slptoken/:addr',
-    handlers: [controller.sendSLPToken],
+    handlers: [controller.sendSLPToken]
   },
-  // {
-  //   method: 'GET',
-  //   route: '/avaxtoken/:address',
-  //   handlers: [controller.getUser],
-  // },
+  {
+    method: 'GET',
+    route: '/avaxtoken/:addr',
+    handlers: [controller.sendAvaxToken]
+  }
 ]
